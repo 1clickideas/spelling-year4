@@ -1,11 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  const WORD_LISTS = [
-    { word: "jumped", clue: "Past tense of jump" },
-    { word: "walked", clue: "Past tense of walk" },
-    { word: "looked", clue: "Past tense of look" },
-    { word: "planned", clue: "Past tense of plan" },
-    { word: "typed", clue: "Past tense of type" },
+document.addEventListener("DOMContentLoaded", () => {document.addEvent word: "typed", clue: "Past tense of type" },
     { word: "smiled", clue: "Past tense of smile" },
     { word: "chatted", clue: "Past tense of chat" },
     { word: "dropped", clue: "Past tense of drop" },
@@ -40,11 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
     let letters = word.split("");
     const numToHide = Math.ceil(word.length / 2);
     let indices = [];
+
     while (indices.length < numToHide) {
       let idx = Math.floor(Math.random() * word.length);
       if (!indices.includes(idx)) indices.push(idx);
     }
-    for (let i of indices) letters[i] = "_";
+
+    for (let i of indices) {
+      letters[i] = "_";
+    }
+
     return letters.join(" ");
   }
 
@@ -54,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.style.display = "none";
     submitBtn.disabled = false;
     guessInput.disabled = false;
-    
+
     const item = WORD_LISTS[Math.floor(Math.random() * WORD_LISTS.length)];
     currentWord = item.word.toLowerCase();
 
@@ -65,45 +63,59 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       clueText.textContent = "Complete the word: " + hideLetters(item.word);
     }
-    
+
     guessInput.focus();
   }
 
   function checkAnswer() {
     const guess = guessInput.value.trim().toLowerCase();
+
     if (!guess) return;
 
     if (guess === currentWord) {
       feedbackEl.textContent = "✅ Correct!";
       coins += 10;
       streak++;
+
       gameContainer.classList.add("correct");
       setTimeout(() => gameContainer.classList.remove("correct"), 1000);
+
       submitBtn.disabled = true;
       guessInput.disabled = true;
       nextBtn.style.display = "inline-block";
     } else {
       feedbackEl.textContent = "❌ Incorrect. The correct word was: " + currentWord;
       streak = 0;
+
       gameContainer.classList.add("wrong");
       setTimeout(() => gameContainer.classList.remove("wrong"), 500);
+
       submitBtn.disabled = true;
       guessInput.disabled = true;
       nextBtn.style.display = "inline-block";
     }
+
     updateUI();
   }
 
   submitBtn.addEventListener("click", checkAnswer);
+
   nextBtn.addEventListener("click", newRound);
-  guessInput.addEventListener("keydown", (e) => { 
+
+  guessInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       checkAnswer();
-    } 
+    }
   });
 
-  // Initialize
   updateUI();
   newRound();
 
 });
+
+
+  const WORD_LISTS = [
+    { word: "jumped", clue: "Past tense of jump" },
+    { word: "walked", clue: "Past tense of walk" },
+    { word: "looked", clue: "Past tense of look" },
+    { word: "planned", clue: "Past tense of plan" },
